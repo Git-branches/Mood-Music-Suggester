@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Music Suggester</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="mood-calm">
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+    </button>
+
+    <!-- Spotify Login Button -->
+    <button class="spotify-login" id="spotifyLogin" style="display: none;">Login with Spotify</button>
+
+    <div class="container">
+        <div class="main-card">
+            <div class="controls-column">
+                <div class="header">
+                    <h1 class="glowing-text">🎵 Mood Music Suggester</h1>
+                    <p class="subtitle">Curate your perfect playlist based on your vibe</p>
+                </div>
+
+                <!-- Mood Selection -->
+                <div class="section-title">
+                    <span class="icon-bounce">😊</span> How are you feeling?
+                </div>
+                <div class="mood-grid" id="moodGrid">
+                    <div class="mood-btn" data-mood="happy">
+                        <div class="mood-emoji">😊</div>
+                        <div class="mood-label">Happy</div>
+                    </div>
+                    <div class="mood-btn" data-mood="sad">
+                        <div class="mood-emoji">😢</div>
+                        <div class="mood-label">Sad</div>
+                    </div>
+                    <div class="mood-btn" data-mood="energetic">
+                        <div class="mood-emoji">⚡</div>
+                        <div class="mood-label">Energetic</div>
+                    </div>
+                    <div class="mood-btn active" data-mood="calm">
+                        <div class="mood-emoji">😌</div>
+                        <div class="mood-label">Calm</div>
+                    </div>
+                    <div class="mood-btn" data-mood="romantic">
+                        <div class="mood-emoji">💕</div>
+                        <div class="mood-label">Romantic</div>
+                    </div>
+                    <div class="mood-btn" data-mood="focused">
+                        <div class="mood-emoji">🎯</div>
+                        <div class="mood-label">Focused</div>
+                    </div>
+                    <div class="mood-btn" data-mood="nostalgic">
+                        <div class="mood-emoji">🌅</div>
+                        <div class="mood-label">Nostalgic</div>
+                    </div>
+                    <div class="mood-btn" data-mood="adventurous">
+                        <div class="mood-emoji">🌍</div>
+                        <div class="mood-label">Adventurous</div>
+                    </div>
+                </div>
+
+                <!-- Intensity Slider -->
+                <div class="section-title">
+                    <span class="icon-bounce">📊</span> Mood Intensity
+                </div>
+                <div class="intensity-slider">
+                    <input type="range" class="custom-range" id="intensitySlider" min="1" max="10" value="5">
+                    <div class="slider-labels">
+                        <span>Subtle</span>
+                        <span id="intensityValue">5</span>
+                        <span>Intense</span>
+                    </div>
+                </div>
+
+                <!-- Weather -->
+                <div class="section-title">
+                    <span class="icon-bounce">🌤️</span> Current Weather
+                </div>
+                <div class="weather-options" id="weatherOptions">
+                    <div class="option-btn active" data-weather="sunny">☀️ Sunny</div>
+                    <div class="option-btn" data-weather="rainy">🌧️ Rainy</div>
+                    <div class="option-btn" data-weather="cloudy">☁️ Cloudy</div>
+                    <div class="option-btn" data-weather="snowy">❄️ Snowy</div>
+                    <div class="option-btn" data-weather="windy">💨 Windy</div>
+                </div>
+
+                <!-- Time of Day -->
+                <div class="section-title">
+                    <span class="icon-bounce">🕐</span> Time of Day
+                </div>
+                <div class="time-options" id="timeOptions">
+                    <div class="option-btn" data-time="morning">🌅 Morning</div>
+                    <div class="option-btn active" data-time="afternoon">☀️ Afternoon</div>
+                    <div class="option-btn" data-time="evening">🌆 Evening</div>
+                    <div class="option-btn" data-time="night">🌙 Night</div>
+                    <div class="option-btn" data-time="latenight">🌃 Late Night</div>
+                </div>
+
+                <button class="generate-btn" onclick="generatePlaylist()">
+                    <span class="btn-icon">✨</span>
+                    <span class="btn-text">Generate My Playlist</span>
+                    <span class="btn-shimmer"></span>
+                    <span class="btn-loading" style="display: none;">⏳</span>
+                </button>
+            </div>
+
+            <!-- Results -->
+            <div class="results-column">
+                <div class="results-section" id="resultsSection">
+                    <div class="vibe-meter">
+                        <div class="vibe-circle" id="vibeCircle">🎵</div>
+                        <h3>Your Vibe</h3>
+                    </div>
+                    
+                    <div class="playlist-name" id="playlistName"></div>
+                    <div class="mood-description" id="moodDescription"></div>
+                    
+                    <div class="genre-tags" id="genreTags"></div>
+                    
+                    <h4 class="tracks-title">
+                        🎧 Suggested Tracks
+                    </h4>
+                    <ul class="song-list" id="songList"></ul>
+                    
+                    <div class="player-card" id="playerCard">
+                        <audio id="musicPlayer" controls></audio>
+                        <p id="noPreviewMessage" style="display: none; color: var(--text-secondary); font-size: 0.75rem; text-align: center;">
+                            No preview available for this track
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

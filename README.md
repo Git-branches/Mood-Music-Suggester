@@ -23,5 +23,6 @@ CSS3 – Styling and animations
 JavaScript (ES6) – Logic and interactivity
 
 ## 👩‍💻 Developer
-Rhon Jon G. Romero 📫 ejromero294@gmail.com 💼 (https://github.com/Git-branches)
+Git-branches kay boring
+
 

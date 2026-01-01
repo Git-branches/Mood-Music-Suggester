@@ -20,9 +20,10 @@ HTML5 – Structure and layout
 
 CSS3 – Styling and animations
 
-JavaScript (ES6) – Logic and interactivity
+JavaScript – Logic and interactivity
 
 ## 👩‍💻 Developer
 Git-branches kay boring
+
 
 
